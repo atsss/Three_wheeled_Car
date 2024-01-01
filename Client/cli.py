@@ -41,11 +41,11 @@ class CommandLineInterface():
             elif o in ("-f"):
                 self.move_forward()
             elif o in ("-b"):
-                slef.move_backword()
+                self.move_backword()
             elif o in ("-u"):
-                slef.camera_up()
+                self.camera_up()
             elif o in ("-d"):
-                slef.camera_down()
+                self.camera_down()
 
 
     def connect_tcp(self, server_ip):
@@ -57,6 +57,7 @@ class CommandLineInterface():
             self.msgDlg.showMessage("Connect to server Faild! \n\t1. Server IP is right? \n\t2. Server is opend?")
             return
         print("Connecttion Successful !")
+
     def camera_up(self):
         self.tcp.sendData(cmd.CMD_CAMERA_UP + str(self.Camera_V_Pos))
 
