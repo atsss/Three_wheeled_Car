@@ -56,12 +56,12 @@ class CommandLineInterface():
 
     def tilt_camera_up(self):
         self.Camera_V_Pos = self.Camera_V_Pos + self.ANGLE_UNIT
-        self.Camera_V_Pos = min(max(self.Camera_V_Pos, self.SERVO_MIN_ANGLE), self.SERVO_MAX_ANGLE))
+        self.Camera_V_Pos = min(max(self.Camera_V_Pos, self.SERVO_MIN_ANGLE), self.SERVO_MAX_ANGLE)
         self.tcp.sendData(cmd.CMD_CAMERA_UP + str(self.Camera_V_Pos))
 
     def tilt_camera_down(self):
         self.Camera_V_Pos = self.Camera_V_Pos - self.ANGLE_UNIT
-        self.Camera_V_Pos = min(max(self.Camera_V_Pos, self.SERVO_MIN_ANGLE), self.SERVO_MAX_ANGLE))
+        self.Camera_V_Pos = min(max(self.Camera_V_Pos, self.SERVO_MIN_ANGLE), self.SERVO_MAX_ANGLE)
         self.tcp.sendData(cmd.CMD_CAMERA_DOWN + str(self.Camera_V_Pos))
 
     def move_forward(self):
