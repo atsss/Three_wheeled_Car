@@ -7,14 +7,7 @@
 ########################################################################
 from TCPClient import TCPClient
 from Command import COMMAND as cmd
-import os
 import sys,getopt
-from Freenove_Math import *
-import time
-import threading
-import math
-#import copy
-from CloseThreading import *
 
 class CommandLineInterface():
     tcp = TCPClient()
