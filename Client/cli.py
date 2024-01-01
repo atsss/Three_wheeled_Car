@@ -48,20 +48,20 @@ class CommandLineInterface():
         print("Connecttion Successful !")
 
     def tilt_camera_up(self):
-        self.Camera_V_Pos = self.Camera_V_Pos + ANGLE_UNIT
+        self.Camera_V_Pos = self.Camera_V_Pos + self.ANGLE_UNIT
         self.Camera_V_Pos = constrain(self.Camera_V_Pos, self.SERVO_MIN_ANGLE, self.SERVO_MAX_ANGLE)
         self.tcp.sendData(cmd.CMD_CAMERA_UP + str(self.Camera_V_Pos))
 
     def tilt_camera_down(self):
-        self.Camera_V_Pos = self.Camera_V_Pos - ANGLE_UNIT
+        self.Camera_V_Pos = self.Camera_V_Pos - self.ANGLE_UNIT
         self.Camera_V_Pos = constrain(self.Camera_V_Pos, self.SERVO_MIN_ANGLE, self.SERVO_MAX_ANGLE)
         self.tcp.sendData(cmd.CMD_CAMERA_DOWN + str(self.Camera_V_Pos))
 
     def move_forward(self):
-        self.setMoveSpeed(cmd.CMD_FORWARD, SPEED_UNIT)
+        self.setMoveSpeed(cmd.CMD_FORWARD, self.SPEED_UNIT)
 
     def move_backword(self):
-        self.setMoveSpeed(cmd.CMD_BACKWARD, SPEED_UNIT)
+        self.setMoveSpeed(cmd.CMD_BACKWARD, self.SPEED_UNIT)
 
 
 if __name__ == "__main__":
