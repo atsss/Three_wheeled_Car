@@ -22,12 +22,8 @@ class CommandLineInterface():
     Camera_V_Pos = 90
     SERVO_MIN_ANGLE = 0
     SERVO_MAX_ANGLE = 180
-    Is_Paint_Thread_On = False
-    global t_Paint_Thread
-    sonic_Index = 0
-    sonic_buff = [0]*20
-    send_Counter = 0
-    Is_tcp_Idle = True
+    ANGLE_UNIT = 10
+    SPEED_UNIT = 50
 
     def __init__(self, parent=None):
         try:
@@ -43,9 +39,9 @@ class CommandLineInterface():
             elif o in ("-b"):
                 self.move_backword()
             elif o in ("-u"):
-                self.camera_up()
+                self.tilt_camera_up()
             elif o in ("-d"):
-                self.camera_down()
+                self.tilt_camera_down()
 
 
     def connect_tcp(self, server_ip):
@@ -58,17 +54,21 @@ class CommandLineInterface():
             return
         print("Connecttion Successful !")
 
-    def camera_up(self):
+    def tilt_camera_up(self):
+        self.Camera_V_Pos = self.Camera_V_Pos + ANGLE_UNIT
+        self.Camera_V_Pos = constrain(self.Camera_V_Pos, self.SERVO_MIN_ANGLE, self.SERVO_MAX_ANGLE)
         self.tcp.sendData(cmd.CMD_CAMERA_UP + str(self.Camera_V_Pos))
 
-    def camera_down(self):
+    def tilt_camera_down(self):
+        self.Camera_V_Pos = self.Camera_V_Pos - ANGLE_UNIT
+        self.Camera_V_Pos = constrain(self.Camera_V_Pos, self.SERVO_MIN_ANGLE, self.SERVO_MAX_ANGLE)
         self.tcp.sendData(cmd.CMD_CAMERA_DOWN + str(self.Camera_V_Pos))
 
     def move_forward(self):
-        self.setMoveSpeed(cmd.CMD_FORWARD,self.slider_Speed.value())
+        self.setMoveSpeed(cmd.CMD_FORWARD, SPEED_UNIT)
 
     def move_backword(self):
-        self.setMoveSpeed(cmd.CMD_BACKWARD,self.slider_Speed.value())
+        self.setMoveSpeed(cmd.CMD_BACKWARD, SPEED_UNIT)
 
 
 if __name__ == "__main__":
