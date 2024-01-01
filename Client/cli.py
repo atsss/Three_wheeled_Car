@@ -21,7 +21,7 @@ class CommandLineInterface():
 
     def __init__(self, parent=None):
         try:
-            self.opts,self.args = getopt.getopt(sys.argv[1:],"a:fbud")
+            self.opts,self.args = getopt.getopt(sys.argv[1:],"a:fbuds")
         except getopt.GetoptError as err:
             print(str(err))
             return
@@ -33,6 +33,8 @@ class CommandLineInterface():
                 self.move_forward()
             elif o in ("-b"):
                 self.move_backword()
+            elif o in ("-s"):
+                self.stop_moving()
             elif o in ("-u"):
                 self.tilt_camera_up()
             elif o in ("-d"):
@@ -69,6 +71,9 @@ class CommandLineInterface():
 
     def move_backword(self):
         self.setMoveSpeed(cmd.CMD_BACKWARD, self.SPEED_UNIT)
+
+    def stop_moving(self):
+        self.tcp.sendData(cmd.CMD_STOP)
 
     def setMoveSpeed(self, CMD, spd):
         self.tcp.sendData(CMD + str(int(spd//3)))
