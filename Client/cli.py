@@ -86,7 +86,7 @@ class CommandLineInterface():
         self.tcp.sendData(cmd.CMD_TURN_RIGHT + str(self.TURN_ANGLE_UNIT))
 
     def turn_center(self):
-        self.tcp.sendData(cmd.CMD_TURN_CENTER)
+        self.tcp.sendData(f"{cmd.CMD_TURN_CENTER}90")
 
 
 if __name__ == "__main__":
