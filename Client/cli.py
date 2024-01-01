@@ -8,6 +8,7 @@
 from TCPClient import TCPClient
 from Command import COMMAND as cmd
 import sys,getopt
+import time
 
 class CommandLineInterface():
     tcp = TCPClient()
@@ -24,6 +25,7 @@ class CommandLineInterface():
         except getopt.GetoptError as err:
             print(str(err))
             return
+
         for o,a in self.opts:
             if o in ("-a"):
                 self.connect_tcp(a)
@@ -36,6 +38,8 @@ class CommandLineInterface():
             elif o in ("-d"):
                 self.tilt_camera_down()
 
+        time.sleep(0.1)
+        self.disconnect_tcp()
 
     def connect_tcp(self, server_ip):
         print(("Connecting......", server_ip))
@@ -45,7 +49,10 @@ class CommandLineInterface():
             print(("Connect to server Faild!: Server IP is right? Server is opend?", e))
             self.msgDlg.showMessage("Connect to server Faild! \n\t1. Server IP is right? \n\t2. Server is opend?")
             return
-        print("Connecttion Successful !")
+        print("Connecttion Successful!")
+
+    def disconnect_tcp(self):
+        self.tcp.disConnect()
 
     def tilt_camera_up(self):
         self.Camera_V_Pos = self.Camera_V_Pos + self.ANGLE_UNIT
