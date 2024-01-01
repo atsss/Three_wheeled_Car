@@ -16,7 +16,7 @@ class CommandLineInterface():
     Camera_V_Pos = 90
     SERVO_MIN_ANGLE = 0
     SERVO_MAX_ANGLE = 180
-    ANGLE_UNIT = 10
+    ANGLE_UNIT = 5
     SPEED_UNIT = 50
     TURN_ANGLE_UNIT = 35
 
