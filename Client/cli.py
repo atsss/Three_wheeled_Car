@@ -12,17 +12,14 @@ import time
 
 class CommandLineInterface():
     tcp = TCPClient()
-    Camera_H_Pos = 90
-    Camera_V_Pos = 90
     SERVO_MIN_ANGLE = 0
     SERVO_MAX_ANGLE = 180
-    ANGLE_UNIT = 5
     SPEED_UNIT = 50
     TURN_ANGLE_UNIT = 35
 
     def __init__(self, parent=None):
         try:
-            self.opts,self.args = getopt.getopt(sys.argv[1:],"a:fbsudlrc")
+            self.opts,self.args = getopt.getopt(sys.argv[1:],"a:t:fbslrc")
         except getopt.GetoptError as err:
             print(str(err))
             return
@@ -30,16 +27,14 @@ class CommandLineInterface():
         for o,a in self.opts:
             if o in ("-a"):
                 self.connect_tcp(a)
+            elif o in ("-t"):
+                self.tilt_camera(a)
             elif o in ("-f"):
                 self.move_forward()
             elif o in ("-b"):
                 self.move_backword()
             elif o in ("-s"):
                 self.stop_moving()
-            elif o in ("-u"):
-                self.tilt_camera_up()
-            elif o in ("-d"):
-                self.tilt_camera_down()
             elif o in ("-l"):
                 self.turn_left()
             elif o in ("-r"):
@@ -63,15 +58,9 @@ class CommandLineInterface():
     def disconnect_tcp(self):
         self.tcp.disConnect()
 
-    def tilt_camera_up(self):
-        self.Camera_V_Pos = self.Camera_V_Pos + self.ANGLE_UNIT
-        self.Camera_V_Pos = min(max(self.Camera_V_Pos, self.SERVO_MIN_ANGLE), self.SERVO_MAX_ANGLE)
-        self.tcp.sendData(cmd.CMD_CAMERA_UP + str(self.Camera_V_Pos))
-
-    def tilt_camera_down(self):
-        self.Camera_V_Pos = self.Camera_V_Pos - self.ANGLE_UNIT
-        self.Camera_V_Pos = min(max(self.Camera_V_Pos, self.SERVO_MIN_ANGLE), self.SERVO_MAX_ANGLE)
-        self.tcp.sendData(cmd.CMD_CAMERA_DOWN + str(self.Camera_V_Pos))
+    def tilt_camera(self, angle):
+        target_angle = min(max(int(angle), self.SERVO_MIN_ANGLE), self.SERVO_MAX_ANGLE)
+        self.tcp.sendData(cmd.CMD_CAMERA_UP + str(target_angle))
 
     def move_forward(self):
         self.setMoveSpeed(cmd.CMD_FORWARD, self.SPEED_UNIT)
