@@ -18,10 +18,11 @@ class CommandLineInterface():
     SERVO_MAX_ANGLE = 180
     ANGLE_UNIT = 10
     SPEED_UNIT = 50
+    TURN_ANGLE_UNIT = 35
 
     def __init__(self, parent=None):
         try:
-            self.opts,self.args = getopt.getopt(sys.argv[1:],"a:fbuds")
+            self.opts,self.args = getopt.getopt(sys.argv[1:],"a:fbsudlrc")
         except getopt.GetoptError as err:
             print(str(err))
             return
@@ -39,6 +40,12 @@ class CommandLineInterface():
                 self.tilt_camera_up()
             elif o in ("-d"):
                 self.tilt_camera_down()
+            elif o in ("-l"):
+                self.turn_left()
+            elif o in ("-r"):
+                self.turn_right()
+            elif o in ("-c"):
+                self.turn_center()
 
         time.sleep(0.1)
         self.disconnect_tcp()
@@ -82,6 +89,15 @@ class CommandLineInterface():
         self.tcp.sendData(CMD + str(int(spd//3*2)))
         time.sleep(0.07)
         self.tcp.sendData(CMD + str(int(spd)))
+
+    def turn_left(self):
+        self.tcp.sendData(cmd.CMD_TURN_LEFT + self.TURN_ANGLE_UNIT)
+
+    def turn_right(self):
+        self.tcp.sendData(cmd.CMD_TURN_RIGHT + self.TURN_ANGLE_UNIT)
+
+    def turn_center(self):
+        self.tcp.sendData(cmd.CMD_TURN_CENTER)
 
 
 if __name__ == "__main__":
