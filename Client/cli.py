@@ -80,10 +80,10 @@ class CommandLineInterface():
         self.tcp.sendData(CMD + str(int(spd)))
 
     def turn_left(self):
-        self.tcp.sendData(cmd.CMD_TURN_LEFT + self.TURN_ANGLE_UNIT)
+        self.tcp.sendData(cmd.CMD_TURN_LEFT + str(self.TURN_ANGLE_UNIT))
 
     def turn_right(self):
-        self.tcp.sendData(cmd.CMD_TURN_RIGHT + self.TURN_ANGLE_UNIT)
+        self.tcp.sendData(cmd.CMD_TURN_RIGHT + str(self.TURN_ANGLE_UNIT))
 
     def turn_center(self):
         self.tcp.sendData(cmd.CMD_TURN_CENTER)
