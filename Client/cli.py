@@ -14,7 +14,7 @@ class CommandLineInterface():
     tcp = TCPClient()
     SERVO_MIN_ANGLE = 0
     SERVO_MAX_ANGLE = 180
-    SPEED_UNIT = 50
+    SPEED_UNIT = 10
     TURN_ANGLE_UNIT = 35
 
     def __init__(self, parent=None):
