@@ -21,24 +21,18 @@ class Main():
     #cmr_Thread.setDaemon(True)
     #cmr_Thread = Camera_Server()
     def __init__(self, parent=None):
-        self.parseOpt()
+        self.start_tcp()
+        self.start_camera()
 
-    def parseOpt(self):
-        try:
-            self.opts,self.args = getopt.getopt(sys.argv[1:],"mnt")
-        except getopt.GetoptError as err:
-            print(str(err))
-            return
-        for o,a in self.opts:
-            if o in ("-m"):
-                self.cmr_Thread = Camera_Server()
-                self.cmr_Thread.start()
-            elif o in ("-t"):
-                self.tcp = mTCPServer()
-                self.tcp.setDaemon(True)
-                self.tcp.start()
-            elif o in ("-n"):
-                self.user_ui = False
+    def start_tcp(self):
+        self.tcp = mTCPServer()
+        self.tcp.setDaemon(True)
+        self.tcp.start()
+
+    def start_camera(self):
+        self.cmr_Thread = Camera_Server()
+        self.cmr_Thread.start()
+
 
 if __name__ == "__main__":
     dlg = Main()
