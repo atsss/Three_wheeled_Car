@@ -49,12 +49,12 @@ class CommandLineInterface():
 
     def tilt_camera_up(self):
         self.Camera_V_Pos = self.Camera_V_Pos + self.ANGLE_UNIT
-        self.Camera_V_Pos = constrain(self.Camera_V_Pos, self.SERVO_MIN_ANGLE, self.SERVO_MAX_ANGLE)
+        self.Camera_V_Pos = min(max(self.Camera_V_Pos, self.SERVO_MIN_ANGLE), self.SERVO_MAX_ANGLE))
         self.tcp.sendData(cmd.CMD_CAMERA_UP + str(self.Camera_V_Pos))
 
     def tilt_camera_down(self):
         self.Camera_V_Pos = self.Camera_V_Pos - self.ANGLE_UNIT
-        self.Camera_V_Pos = constrain(self.Camera_V_Pos, self.SERVO_MIN_ANGLE, self.SERVO_MAX_ANGLE)
+        self.Camera_V_Pos = min(max(self.Camera_V_Pos, self.SERVO_MIN_ANGLE), self.SERVO_MAX_ANGLE))
         self.tcp.sendData(cmd.CMD_CAMERA_DOWN + str(self.Camera_V_Pos))
 
     def move_forward(self):
@@ -62,6 +62,14 @@ class CommandLineInterface():
 
     def move_backword(self):
         self.setMoveSpeed(cmd.CMD_BACKWARD, self.SPEED_UNIT)
+
+    def setMoveSpeed(self, CMD, spd):
+        self.tcp.sendData(CMD + str(int(spd//3)))
+        self.tcp.sendData(CMD )
+        time.sleep(0.07)
+        self.tcp.sendData(CMD + str(int(spd//3*2)))
+        time.sleep(0.07)
+        self.tcp.sendData(CMD + str(int(spd)))
 
 
 if __name__ == "__main__":
