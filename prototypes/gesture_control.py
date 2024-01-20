@@ -2,9 +2,6 @@ import argparse
 import sys
 import time
 
-from gpiozero import LED
-red = LED(17)
-
 import cv2
 import mediapipe as mp
 from picamera2 import Picamera2
@@ -16,15 +13,12 @@ mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
+from led_control import LedControl
+
 
 # Global variables to calculate FPS
 COUNTER, FPS = 0, 0
 START_TIME = time.time()
-
-# Command map
-TURN_ON = 'on'
-TURN_OFF = 'off'
-COMMAND_MAP = { 'Closed_Fist': TURN_OFF, 'Open_Palm': TURN_ON }
 
 
 def run(model: str, num_hands: int,
@@ -68,25 +62,8 @@ def run(model: str, num_hands: int,
   label_font_size = 1
   label_thickness = 2
 
-  # command
-  prev_command = None
-
-  def get_command(gesture_name: str) -> str | None:
-      if gesture_name not in COMMAND_MAP:
-          return
-
-      return COMMAND_MAP[gesture_name]
-
-  def control_led(current_command: str | None, next_command: str | None) -> None:
-      if not next_command:
-          return
-      if next_command == current_command:
-          return
-
-      if next_command == TURN_ON:
-        red.on()
-      elif next_command == TURN_OFF:
-        red.off()
+  # LED setup
+  led_control = LedControl()
 
   recognition_frame = None
   recognition_result_list = []
@@ -176,9 +153,9 @@ def run(model: str, num_hands: int,
                       label_text_color, label_thickness, cv2.LINE_AA)
 
           # Control LED
-          next_command = get_command(category_name)
-          control_led(prev_command, next_command)
-          prev_command = next_command
+          current_command = led_control.get_command(category_name)
+          led_control.update_led(current_command)
+          led_control.prev_command = current_command
 
       recognition_frame = current_frame
       recognition_result_list.clear()
