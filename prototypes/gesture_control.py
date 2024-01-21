@@ -1,19 +1,17 @@
 import argparse
-import sys
 import time
 
 import cv2
 import mediapipe as mp
 from picamera2 import Picamera2
 
+from led_control import LedControl
+
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from mediapipe.framework.formats import landmark_pb2
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
-
-from led_control import LedControl
 
 def run(model: str, num_hands: int,
         min_hand_detection_confidence: float,
@@ -31,7 +29,6 @@ def run(model: str, num_hands: int,
   # LED setup
   led_control = LedControl()
 
-  recognition_frame = None
   recognition_result_list = []
 
   def save_result(result: vision.GestureRecognizerResult,
@@ -70,14 +67,12 @@ def run(model: str, num_hands: int,
           gesture = recognition_result_list[0].gestures[hand_index]
           category_name = gesture[0].category_name
           score = round(gesture[0].score, 2)
-          result_text = f'{category_name} ({score})'
 
           # Control LED
           current_command = led_control.get_command(category_name)
           led_control.update_led(current_command)
           led_control.prev_command = current_command
 
-      recognition_frame = image
       recognition_result_list.clear()
 
     # Stop the program if the ESC key is pressed.
