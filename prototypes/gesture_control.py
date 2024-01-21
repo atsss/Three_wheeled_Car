@@ -1,4 +1,3 @@
-import argparse
 import time
 
 import cv2
@@ -13,10 +12,15 @@ mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-def run(model: str, num_hands: int,
-        min_hand_detection_confidence: float,
-        min_hand_presence_confidence: float, min_tracking_confidence: float,
-        width: int, height: int) -> None:
+def run() -> None:
+  # Configs
+  model = 'gesture_recognizer.task'
+  num_hands = 1
+  min_hand_detection_confidence = 0.5
+  min_hand_presence_confidence = 0.5
+  min_tracking_confidence = 0.5
+  width = 640
+  height = 480
 
   # Start capturing video input from the camera
   picam2 = Picamera2()
@@ -80,52 +84,7 @@ def run(model: str, num_hands: int,
     print('interrupted!')
 
 def main():
-  parser = argparse.ArgumentParser(
-      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-  parser.add_argument(
-      '--model',
-      help='Name of gesture recognition model.',
-      required=False,
-      default='gesture_recognizer.task')
-  parser.add_argument(
-      '--numHands',
-      help='Max number of hands that can be detected by the recognizer.',
-      required=False,
-      default=1)
-  parser.add_argument(
-      '--minHandDetectionConfidence',
-      help='The minimum confidence score for hand detection to be considered '
-           'successful.',
-      required=False,
-      default=0.5)
-  parser.add_argument(
-      '--minHandPresenceConfidence',
-      help='The minimum confidence score of hand presence score in the hand '
-           'landmark detection.',
-      required=False,
-      default=0.5)
-  parser.add_argument(
-      '--minTrackingConfidence',
-      help='The minimum confidence score for the hand tracking to be '
-           'considered successful.',
-      required=False,
-      default=0.5)
-  parser.add_argument(
-      '--frameWidth',
-      help='Width of frame to capture from camera.',
-      required=False,
-      default=640)
-  parser.add_argument(
-      '--frameHeight',
-      help='Height of frame to capture from camera.',
-      required=False,
-      default=480)
-  args = parser.parse_args()
-
-  run(args.model, int(args.numHands), args.minHandDetectionConfidence,
-      args.minHandPresenceConfidence, args.minTrackingConfidence,
-      args.frameWidth, args.frameHeight)
-
+  run()
 
 if __name__ == '__main__':
   main()
