@@ -46,42 +46,39 @@ def run(model: str, num_hands: int,
                                           result_callback=save_result)
   recognizer = vision.GestureRecognizer.create_from_options(options)
 
-  # Continuously capture images from the camera and run inference
-  while True:
-    image = picam2.capture_array()
-    image = cv2.flip(image, 1)
+  try:
+    # Continuously capture images from the camera and run inference
+    while True:
+      image = picam2.capture_array()
+      image = cv2.flip(image, 1)
 
-    # Convert the image from BGR to RGB as required by the TFLite model.
-    rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_image)
+      # Convert the image from BGR to RGB as required by the TFLite model.
+      rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+      mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_image)
 
-    # Run gesture recognizer using the model.
-    recognizer.recognize_async(mp_image, time.time_ns() // 1_000_000)
+      # Run gesture recognizer using the model.
+      recognizer.recognize_async(mp_image, time.time_ns() // 1_000_000)
 
-    if recognition_result_list:
-      # Draw landmarks and write the text for each hand.
-      for hand_index, hand_landmarks in enumerate(
-          recognition_result_list[0].hand_landmarks):
-        # Get gesture classification results
-        if recognition_result_list[0].gestures:
-          gesture = recognition_result_list[0].gestures[hand_index]
-          category_name = gesture[0].category_name
-          score = round(gesture[0].score, 2)
+      if recognition_result_list:
+        # Draw landmarks and write the text for each hand.
+        for hand_index, hand_landmarks in enumerate(
+            recognition_result_list[0].hand_landmarks):
+          # Get gesture classification results
+          if recognition_result_list[0].gestures:
+            gesture = recognition_result_list[0].gestures[hand_index]
+            category_name = gesture[0].category_name
+            score = round(gesture[0].score, 2)
 
-          # Control LED
-          current_command = led_control.get_command(category_name)
-          led_control.update_led(current_command)
-          led_control.prev_command = current_command
+            # Control LED
+            current_command = led_control.get_command(category_name)
+            led_control.update_led(current_command)
+            led_control.prev_command = current_command
 
-      recognition_result_list.clear()
-
-    # Stop the program if the ESC key is pressed.
-    if cv2.waitKey(1) == 27:
-        break
-
-  recognizer.close()
-  cv2.destroyAllWindows()
-
+        recognition_result_list.clear()
+  except KeyboardInterrupt:
+    recognizer.close()
+    cv2.destroyAllWindows()
+    print('interrupted!')
 
 def main():
   parser = argparse.ArgumentParser(
