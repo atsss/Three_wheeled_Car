@@ -112,4 +112,4 @@ class GestureControl():
 
 
 if __name__ == "__main__":
-    CommandLineInterface()
+    GestureControl()
