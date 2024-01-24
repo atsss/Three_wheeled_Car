@@ -35,6 +35,7 @@ class WheelControl:
         if self.prev_command == current_command:
             return
 
+        print(f'Command: {current_command}')
         if current_command == MOVE_FOWARD:
           self.move_forward()
         elif current_command == STOP:

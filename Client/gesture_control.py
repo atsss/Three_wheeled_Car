@@ -1,5 +1,6 @@
 from TCPClient import TCPClient
 from Command import COMMAND as cmd
+from wheel_control import WheelControl
 import sys,getopt
 import time
 
@@ -54,6 +55,9 @@ class GestureControl():
         width = 640
         height = 480
 
+        # wheel control setup
+        wheel_control = WheelControl()
+
         # Start capturing video input from the camera
         picam2 = Picamera2()
         picam2.preview_configuration.main.size = (width, height)
@@ -101,7 +105,9 @@ class GestureControl():
                             category_name = gesture[0].category_name
 
                             # Control wheel
-                            print(category_name)
+                            current_command = wheel_control.get_command(category_name)
+                            wheel_control.drive(current_command)
+                            wheel_control.prev_command = current_command
 
                 recognition_result_list.clear()
         except KeyboardInterrupt:
