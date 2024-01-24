@@ -1,5 +1,6 @@
 from TCPClient import TCPClient
 from Command import COMMAND as cmd
+import time
 
 MOVE_FOWARD = 'foward'
 STOP = 'stop'
