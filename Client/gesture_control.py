@@ -93,22 +93,21 @@ class GestureControl():
                 recognizer.recognize_async(mp_image, time.time_ns() // 1_000_000)
 
                 if recognition_result_list:
-                # Draw landmarks and write the text for each hand.
-                for hand_index, hand_landmarks in enumerate(
-                    recognition_result_list[0].hand_landmarks):
-                    # Get gesture classification results
-                    if recognition_result_list[0].gestures:
-                        gesture = recognition_result_list[0].gestures[hand_index]
-                        category_name = gesture[0].category_name
+                    # Draw landmarks and write the text for each hand.
+                    for hand_index, hand_landmarks in enumerate(recognition_result_list[0].hand_landmarks):
+                        # Get gesture classification results
+                        if recognition_result_list[0].gestures:
+                            gesture = recognition_result_list[0].gestures[hand_index]
+                            category_name = gesture[0].category_name
 
-                        # Control wheel
-                        print(category_name)
+                            # Control wheel
+                            print(category_name)
 
                 recognition_result_list.clear()
-            except KeyboardInterrupt:
-                recognizer.close()
-                cv2.destroyAllWindows()
-                print('interrupted!')
+        except KeyboardInterrupt:
+            recognizer.close()
+            cv2.destroyAllWindows()
+            print('interrupted!')
 
 
 if __name__ == "__main__":
