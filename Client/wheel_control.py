@@ -3,8 +3,9 @@ from Command import COMMAND as cmd
 import time
 
 MOVE_FOWARD = 'foward'
+MOVE_BACKWARD = 'backward'
 STOP = 'stop'
-COMMAND_MAP = { 'Closed_Fist': MOVE_FOWARD, 'Open_Palm': STOP }
+COMMAND_MAP = { 'Thumb_Up': MOVE_FOWARD, 'Thumb_Down': MOVE_BACKWARD, 'Open_Palm': STOP }
 
 class WheelControl:
     SERVO_MIN_ANGLE = 0
@@ -38,15 +39,20 @@ class WheelControl:
 
         print(f'Command: {current_command}')
         if current_command == MOVE_FOWARD:
-          self.move_forward()
+            self.move_forward()
+        elif current_command == MOVE_BACKWARD:
+            self.move_backword()
         elif current_command == STOP:
-          self.stop_moving()
+            self.stop_moving()
 
     def move_forward(self):
         self.setMoveSpeed(cmd.CMD_FORWARD, self.SPEED_UNIT)
 
     def stop_moving(self):
         self.tcp.sendData(cmd.CMD_STOP)
+
+    def move_backword(self):
+        self.setMoveSpeed(cmd.CMD_BACKWARD, self.SPEED_UNIT)
 
     def setMoveSpeed(self, CMD, spd):
         self.tcp.sendData(CMD + str(int(spd//3)))
