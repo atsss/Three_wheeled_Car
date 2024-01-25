@@ -7,14 +7,14 @@ STOP = 'stop'
 COMMAND_MAP = { 'Closed_Fist': MOVE_FOWARD, 'Open_Palm': STOP }
 
 class WheelControl:
-    tcp = TCPClient()
     SERVO_MIN_ANGLE = 0
     SERVO_MAX_ANGLE = 180
     SPEED_UNIT = 35
     TURN_ANGLE_UNIT = 35
 
-    def __init__(self):
+    def __init__(self, tcp: TCPClient):
         self._prev_command = None
+        self.tcp = tcp
 
     @property
     def prev_command(self):

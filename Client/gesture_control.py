@@ -56,7 +56,7 @@ class GestureControl():
         height = 480
 
         # wheel control setup
-        wheel_control = WheelControl()
+        wheel_control = WheelControl(tcp=self.tcp)
 
         # Start capturing video input from the camera
         picam2 = Picamera2()
