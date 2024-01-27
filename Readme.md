@@ -7,9 +7,9 @@
 * **Use command in terminal**
 
 	Run following command to download all the files in this repository.
-	
+
 	`git clone --depth 1 https://github.com/Freenove/Freenove_Three-wheeled_Smart_Car_Kit_for_Raspberry_Pi.git`
-  
+
 * **Manually download in browser**
 
     Click the green "Clone or download" button, then click "Download ZIP" button in the pop-up window.
@@ -70,3 +70,10 @@ Our code and circuit are open source. You can obtain the details and the latest 
 
 http://www.freenove.com
 
+## How to run
+```
+cd Client && python gesture_control.py -a '192.168.x.xxx'
+```
+```
+cd Server && python start_server.py
+```
